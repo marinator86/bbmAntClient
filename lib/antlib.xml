@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
 <antlib>
     <typedef classname="bbm.Instructor" name="getInstructions"/>
+    <typedef classname="actionoverride.DefaultTask" name="defaultActionOverrides"/>
 </antlib>
