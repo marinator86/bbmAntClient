@@ -11,11 +11,13 @@ public class ConfigurationModule extends AbstractModule {
     private final String endpoint;
     private final String repositoryUID;
     private final String branchName;
+    private final String commitHash;
 
-    public ConfigurationModule(String endpoint, String repositoryUID, String branchName){
+    public ConfigurationModule(String endpoint, String repositoryUID, String branchName, String commitHash){
         this.endpoint = endpoint;
         this.repositoryUID = repositoryUID;
         this.branchName = branchName;
+        this.commitHash = commitHash;
     }
 
     protected void configure() {
@@ -35,6 +37,11 @@ public class ConfigurationModule extends AbstractModule {
 
             public String getBranchName() {
                 return branchName;
+            }
+
+            @Override
+            public String getCommitHash() {
+                return commitHash;
             }
         };
     }

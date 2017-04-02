@@ -8,10 +8,8 @@ import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.apache.tools.ant.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,6 +62,7 @@ public class DefaultTask extends Task {
             log("Problem with connection!");
             throw new BuildException(e);
         }
+        listMetadata(metadataConnection);
         // "AllotmentSet__c","CollectiveBill__c","Contact","Contract__c","Country__c","Medium__c","ParkingSpaceTypeModifier__c"
         String[] objects = fields.split(",");
         List<List<String>> objectNames = new ArrayList<>();
@@ -72,8 +71,8 @@ public class DefaultTask extends Task {
         for (String n : objects) {
             currentBlock.add(n.trim());
             if(currentBlock.size() == 10) {
-                currentBlock = new ArrayList<>();
                 objectNames.add(currentBlock);
+                currentBlock = new ArrayList<>();
             }
         }
 
@@ -117,6 +116,26 @@ public class DefaultTask extends Task {
                     log(e.getMessage());
             }
 
+        } catch (ConnectionException ce) {
+            ce.printStackTrace();
+        }
+    }
+
+    public void listMetadata(MetadataConnection metadataConnection) {
+        try {
+            ListMetadataQuery query = new ListMetadataQuery();
+            query.setType("CustomObject");
+            //query.setFolder(null);
+            double asOfVersion = 39.0;
+            // Assuming that the SOAP binding has already been established.
+            FileProperties[] lmr = metadataConnection.listMetadata(
+                    new ListMetadataQuery[] {query}, asOfVersion);
+            if (lmr != null) {
+                for (FileProperties n : lmr) {
+                    System.out.println("Component fullName: " + n.getFullName());
+                    System.out.println("Component type: " + n.getType());
+                }
+            }
         } catch (ConnectionException ce) {
             ce.printStackTrace();
         }

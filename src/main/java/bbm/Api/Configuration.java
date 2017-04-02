@@ -9,4 +9,5 @@ public interface Configuration {
     String getEndpoint();
     String getRepositoryUID();
     String getBranchName();
+    String getCommitHash();
 }
