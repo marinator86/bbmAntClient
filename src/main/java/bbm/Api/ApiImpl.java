@@ -9,6 +9,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.util.Base64;
 
 /**
  * Created by mario on 1/27/17.
@@ -32,8 +33,14 @@ public class ApiImpl implements Api {
                 .path(configuration.getRepositoryUID())
                 .path(configuration.getBranchName())
                 .path(configuration.getCommitHash());
+        String authPrefix = "Basic ";
+        String clearCredsString = configuration.getUsername() + ":" + configuration.getPassword();
+        byte[] encodedBytes = Base64.getEncoder().encode(clearCredsString.getBytes());
 
-        Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+        Response response = target.request(MediaType.APPLICATION_JSON_TYPE)
+                .header("Authorization", authPrefix + new String(encodedBytes))
+                .get();
+
         if(response.getStatus() != 200 || !response.hasEntity()){
             handleError(response);
         }

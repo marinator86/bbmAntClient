@@ -1,7 +1,5 @@
 package bbm.Api;
 
-import java.net.URL;
-
 /**
  * Created by mario on 1/27/17.
  */
@@ -10,4 +8,6 @@ public interface Configuration {
     String getRepositoryUID();
     String getBranchName();
     String getCommitHash();
+    String getUsername();
+    String getPassword();
 }

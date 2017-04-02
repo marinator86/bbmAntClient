@@ -14,7 +14,7 @@ public class ClientTest {
     @Test
     public void testApi(){
         Injector injector = Guice.createInjector(
-                new ConfigurationModule("test", "repo", "branch", "commitHash"),
+                new ConfigurationModule("test", "repo", "branch", "commitHash", "username", "password"),
                 new TestApiModule()
         );
         Api bbmApi = injector.getInstance(Api.class);

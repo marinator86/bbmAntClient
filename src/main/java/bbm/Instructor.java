@@ -19,6 +19,8 @@ public class Instructor extends Task{
     private String repositoryUID;
     private String branchName;
     private String commitHash;
+    private String password;
+    private String username;
 
     public void setBbmUrl(String bbmUrl) {
         this.bbmUrl = bbmUrl;
@@ -36,11 +38,19 @@ public class Instructor extends Task{
         this.commitHash = commitHash;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public void execute() throws BuildException {
         super.execute();
         Injector injector = Guice.createInjector(
-                new ConfigurationModule(bbmUrl, repositoryUID, branchName, commitHash),
+                new ConfigurationModule(bbmUrl, repositoryUID, branchName, commitHash, username, password),
                 new ApiModule(),
                 new TaskLoggerModule(new TaskLogger(this))
         );
